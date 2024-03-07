@@ -166,11 +166,7 @@ void hsv_to_rgb(image im)
             //Check where H lies in the curve
             H = H*6;
 
-            if(S==0) {
-                R=V;
-                G=V;
-                B=V;
-            } else if(H>=0 && H<=1) {
+            if(H>=0 && H<=1) {
                 //R is max, G>B
                 R = maxVal;
                 B = minVal;
