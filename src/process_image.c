@@ -151,5 +151,61 @@ void rgb_to_hsv(image im)
 
 void hsv_to_rgb(image im)
 {
-    
+    float H,S,V, R,G,B, C, minVal, maxVal;
+
+    for(int j=0;j<im.h;j++){
+        for(int i=0;i<im.w;i++) {
+            H=get_pixel(im, i, j, 0);
+            S=get_pixel(im, i, j, 1);
+            V=get_pixel(im, i, j, 2);
+            
+            C = V*S;
+            minVal = V - C;
+            maxVal = V;
+            
+            //Check where H lies in the curve
+            H = H*6;
+
+            if(S==0) {
+                R=V;
+                G=V;
+                B=V;
+            } else if(H>=0 && H<=1) {
+                //R is max, G>B
+                R = maxVal;
+                B = minVal;
+                G = C*H + B; 
+            } else if(H>1 && H<=2) {
+                //G is max, R>B
+                G = maxVal;
+                B = minVal;
+                R = B - C*(H-2); 
+            } else if(H>2 && H<=3) {
+                 //G is max, B>R
+                G = maxVal;
+                R = minVal;
+                B = C*(H-2) + R; 
+            } else if(H>3 && H<=4) {
+                //B is max, G>R
+                B = maxVal;
+                R = minVal;
+                G = R - C*(H-4); 
+            } else if(H>4 && H<=5) {
+                //B is max, R>G
+                B = maxVal;
+                G = minVal;
+                R = C*(H-4) + G; 
+            } else if(H>5) {
+               //R is max, B>G
+                H = H - 6;
+                R = maxVal;
+                G = minVal;
+                B = G - C*H; 
+            }
+
+            set_pixel(im, i, j, 0, R);
+            set_pixel(im, i, j, 1, G);
+            set_pixel(im, i, j, 2, B);
+        }
+    }
 }
